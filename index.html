@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireside Table | modern rustic restaurant</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #fefcf5;
+            color: #2e241f;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* color palette — warm, earthy, appetising */
+        :root {
+            --charcoal: #2e241f;
+            --olive: #6b705c;
+            --terracotta: #cb6e4e;
+            --cream: #fefae0;
+            --sand: #f5ebe0;
+            --gold: #bc8c4c;
+            --deep-umber: #3a2c26;
+        }
+
+        /* typography */
+        h1, h2, h3 {
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.8rem, 8vw, 5.2rem);
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--terracotta);
+        }
+
+        .section-padding {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2.5rem;
+            background: rgba(46, 36, 31, 0.92);
+            backdrop-filter: blur(8px);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: -0.5px;
+        }
+        .logo i {
+            color: var(--terracotta);
+            margin-right: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+        .nav-links a {
+            color: #f0e7de;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 1.2rem;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+        }
+        .nav-links a:hover {
+            border-bottom-color: var(--terracotta);
+            color: white;
+        }
+
+        /* mobile menu sim */
+        @media (max-width: 700px) {
+            .nav-links { display: none; }
+        }
+
+        /* hero section — big beautiful food image */
+        .hero {
+            background: linear-gradient(rgba(20, 15, 10, 0.5), rgba(20, 15, 10, 0.4)), 
+                        url('https://images.pexels.com/photos/941864/pexels-photo-941864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            background-attachment: fixed;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 2rem;
+            text-shadow: 0 4px 18px rgba(0,0,0,0.3);
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 2.5rem;
+            font-weight: 300;
+        }
+        .btn {
+            background: var(--terracotta);
+            color: white;
+            border: none;
+            padding: 1rem 2.8rem;
+            font-size: 1.3rem;
+            font-weight: 500;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+            text-decoration: none;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn:hover {
+            background: #b35737;
+            transform: scale(1.03);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+
+        /* story / about */
+        .story-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4rem;
+            align-items: center;
+        }
+        .story-text {
+            flex: 1 1 300px;
+        }
+        .story-text p {
+            font-size: 1.2rem;
+            color: #3e352e;
+            margin: 1.8rem 0;
+        }
+        .image-round {
+            flex: 1 1 300px;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+        .image-round img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .image-round:hover {
+            transform: scale(1.01);
+        }
+
+        /* signature dishes — card based */
+        .menu-highlight {
+            background: var(--sand);
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        .menu-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px -10px rgba(46, 36, 31, 0.15);
+            transition: all 0.2s ease;
+        }
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 38px -10px var(--charcoal);
+        }
+        .menu-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 1.5rem 1.8rem 2rem;
+        }
+        .card-content h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+        .price {
+            font-size: 1.6rem;
+            color: var(--terracotta);
+            font-weight: 600;
+            margin: 0.8rem 0 0.4rem;
+        }
+
+        /* chef section */
+        .chef {
+            background-color: #fff9f3;
+        }
+        .chef-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            align-items: center;
+        }
+        .chef-img {
+            flex: 1 1 280px;
+            border-radius: 50% 50% 30px 30px;
+            overflow: hidden;
+            border: 6px solid var(--gold);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+        }
+        .chef-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .chef-bio {
+            flex: 2 1 300px;
+        }
+        .chef-bio span {
+            color: var(--terracotta);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        /* testimonials / reviews */
+        .testimonials {
+            background: var(--charcoal);
+            color: #f0e7de;
+        }
+        .testimonials h2:after {
+            background: var(--gold);
+        }
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        .testi-card {
+            background: rgba(255,255,245,0.06);
+            padding: 2.2rem 2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(203, 110, 78, 0.3);
+        }
+        .testi-card i {
+            color: var(--terracotta);
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            opacity: 0.7;
+        }
+        .testi-card p {
+            font-style: italic;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+        .reviewer {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* reservation / contact */
+        .contact-section {
+            background: url('https://images.pexels.com/photos/2253643/pexels-photo-2253643.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover fixed;
+            position: relative;
+        }
+        .contact-overlay {
+            background: rgba(46, 36, 31, 0.82);
+            backdrop-filter: blur(3px);
+            padding: 5rem 2rem;
+            color: white;
+        }
+        .contact-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .contact-info {
+            flex: 1 1 250px;
+        }
+        .contact-info i {
+            color: var(--terracotta);
+            width: 40px;
+            font-size: 1.8rem;
+        }
+        .info-line {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+        .reservation-form {
+            flex: 2 1 350px;
+            background: rgba(255,255,250,0.1);
+            padding: 2.5rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255,215,170,0.2);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .reservation-form input, .reservation-form select, .reservation-form textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,250,0.9);
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            color: #2e241f;
+        }
+        .reservation-form textarea {
+            border-radius: 30px;
+            grid-column: span 2;
+        }
+        .btn-submit {
+            background: var(--terracotta);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.3rem;
+            border-radius: 60px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            grid-column: span 2;
+        }
+        .btn-submit:hover {
+            background: #ad4d31;
+        }
+
+        /* ===== UPDATED LONG FOOTER ===== */
+        .footer {
+            background: #16120f;  /* darker, richer */
+            color: #e2d6cc;
+            border-top: 4px solid var(--terracotta);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem 2rem;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            position: relative;
+        }
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 50px;
+            height: 2px;
+            background: var(--terracotta);
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #cbbeb2;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        .footer-col ul li i {
+            color: var(--terracotta);
+            width: 28px;
+            font-size: 1.2rem;
+        }
+
+        .footer-col a {
+            color: #e2d6cc;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .footer-col a:hover {
+            color: var(--terracotta);
+            padding-left: 5px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 1.2rem 0 1.8rem;
+        }
+        .newsletter-form input {
+            flex: 1 1 160px;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            background: #2f2a26;
+            color: white;
+            outline: none;
+        }
+        .newsletter-form button {
+            background: var(--terracotta);
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 50px 50px 0;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .newsletter-form button:hover {
+            background: #b35737;
+        }
+
+        .social-links-footer {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .social-links-footer a {
+            background: #2f2a26;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            transition: 0.2s;
+        }
+        .social-links-footer a:hover {
+            background: var(--terracotta);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid #4d423b;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #b7a394;
+            font-size: 0.95rem;
+        }
+        .footer-bottom .legal-links a {
+            color: #b7a394;
+            margin-left: 2rem;
+            text-decoration: none;
+        }
+        .footer-bottom .legal-links a:hover {
+            color: var(--terracotta);
+        }
+        @media (max-width: 600px) {
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .footer-bottom .legal-links a {
+                margin: 0 0.8rem;
+            }
+        }
+
+        /* Thank you popup / modal */
+        .thankyou-popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .popup-card {
+            background: #fefcf5;
+            max-width: 420px;
+            width: 90%;
+            padding: 2.8rem 2rem;
+            border-radius: 60px 20px 60px 20px;
+            text-align: center;
+            box-shadow: 0 35px 60px rgba(0,0,0,0.4);
+            border: 2px solid var(--gold);
+            animation: pop 0.3s ease;
+        }
+        .popup-card i {
+            font-size: 5rem;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+        }
+        .popup-card h3 {
+            font-size: 2.4rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+        }
+        .popup-card p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #3a2c26;
+        }
+        .popup-card .btn-popup {
+            background: var(--olive);
+            color: white;
+            border: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid var(--terracotta);
+        }
+        .popup-card .btn-popup:hover {
+            background: #5a5e4b;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* utils */
+        .overline {
+            color: var(--terracotta);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 1rem;
+        }
+    </style>
+    <!-- google font for accent -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- sticky navigation bar -->
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-utensils"></i> FIRESIDE TABLE</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#story">Our story</a>
+            <a href="#menu">Menu</a>
+            <a href="#chef">Chef</a>
+            <a href="#reservations">Reserve</a>
+        </div>
+    </nav>
+
+    <!-- HERO section (home) -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <span class="overline">Welcome to</span>
+            <h1>Fireside Table</h1>
+            <p>Rustic comfort, modern soul – locally grown, always seasonal.</p>
+            <a href="#reservations" class="btn">Book a table <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+        </div>
+    </section>
+
+    <!-- STORY / about + beautiful interior image -->
+    <section id="story" class="section-padding">
+        <div class="story-grid">
+            <div class="story-text">
+                <span class="overline">since 2012</span>
+                <h2>Gathering around the fire</h2>
+                <p>What started as a pop-up dinner in the woods became a beloved neighborhood spot. We believe in food that tells a story — wood‑fired, vegetable‑forward, and always made with locally sourced ingredients. Every plate is crafted to bring people together, just like the old hearths.</p>
+                <p>Our open kitchen runs on passion, and our patio is full of laughter. Come as you are, leave satisfied.</p>
+                <a href="#menu" style="color: var(--terracotta); font-weight: 600; font-size: 1.2rem;">Explore menu <i class="fas fa-long-arrow-alt-right"></i></a>
+            </div>
+            <div class="image-round">
+                <img src="https://images.pexels.com/photos/2067628/pexels-photo-2067628.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="rustic restaurant interior with warm light">
+            </div>
+        </div>
+    </section>
+
+    <!-- SIGNATURE DISHES (menu preview) -->
+    <section id="menu" class="menu-highlight section-padding">
+        <span class="overline">Signature dishes</span>
+        <h2>From our hearth</h2>
+        <div class="card-grid">
+            <!-- card 1 -->
+            <div class="menu-card">
+                <img src="https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="wood fired sourdough bread">
+                <div class="card-content">
+                    <h3>Charred sourdough</h3>
+                    <p>House‑cultured butter, smoked sea salt, fermented honey</p>
+                    <div class="price">₹250</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <img src="https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="roasted carrots with yogurt">
+                <div class="card-content">
+                    <h3>Wood roasted carrots</h3>
+                    <p>Whipped goat cheese, nduja, pickled shallot, hazelnut</p>
+                    <div class="price">₹300</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <img src="https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="grilled dry aged steak">
+                <div class="card-content">
+                    <h3>40 day dry aged steak</h3>
+                    <p>Coal roasted onion, salsa verde, rosemary fries</p>
+                    <div class="price">₹380</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <img src="https://images.pexels.com/photos/2915289/pexels-photo-2915289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="molten chocolate cake">
+                <div class="card-content">
+                    <h3>Molten lava cake</h3>
+                    <p>Hazelnut praline, vanilla bean ice cream, espresso salt</p>
+                    <div class="price">₹350</div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="#" class="btn" style="background: var(--olive);">view full menu <i class="fas fa-book-open"></i></a>
+        </div>
+    </section>
+
+    <!-- CHEF / meet the team section -->
+    <section id="chef" class="chef section-padding">
+        <div class="chef-flex">
+            <div class="chef-img">
+                <img src="https://images.pexels.com/photos/3771079/pexels-photo-3771079.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="chef elena holding fresh herbs">
+            </div>
+            <div class="chef-bio">
+                <span>Chef & owner</span>
+                <h2>Kajal Prajapati</h2>
+                <p style="font-size: 1.3rem; margin: 1.5rem 0;">After stages in Copenhagen and Oaxaca, Kajal came home to build a fire‑driven kitchen that honors local farms. Her style is ingredient‑first, deeply seasonal, and never pretentious. “I want every bite to feel like a warm welcome.”</p>
+                <p><i class="fas fa-star" style="color: var(--gold);"></i> <i class="fas fa-star" style="color: var(--gold);"></i> <i class="fas fa-star" style="color: var(--gold);"></i> <i class="fas fa-star" style="color: var(--gold);"></i> <i class="fas fa-star" style="color: var(--gold);"></i> James Beard semifinalist 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS / social proof -->
+    <section class="testimonials section-padding">
+        <span class="overline">kind words</span>
+        <h2>Guests love us</h2>
+        <div class="testi-grid">
+            <div class="testi-card">
+                <i class="fas fa-quote-right"></i>
+                <p>The roasted carrot dish is pure magic — never thought vegetables could steal the show. Warm, cozy, perfect date spot.</p>
+                <div class="reviewer">— Abhishek A.</div>
+            </div>
+            <div class="testi-card">
+                <i class="fas fa-quote-right"></i>
+                <p>Fireside Table feels like a hug. Impeccable service, the steak was cooked to perfection, and that sourdough…</p>
+                <div class="reviewer">— Rohan k.</div>
+            </div>
+            <div class="testi-card">
+                <i class="fas fa-quote-right"></i>
+                <p>Best new restaurant in the neighborhood. Chef Elena even came by our table. genuine, delicious, unforgettable.</p>
+                <div class="reviewer">— Sunny K.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESERVATION + CONTACT section -->
+    <section id="reservations" class="contact-section">
+        <div class="contact-overlay">
+            <div class="contact-flex">
+                <div class="contact-info">
+                    <span class="overline">visit us</span>
+                    <h2 style="color: white; margin-bottom: 0.5rem;">Let's share a meal</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">Walk‑ins always welcome, but a table awaits.</p>
+                    <div class="info-line"><i class="fas fa-map-pin"></i> <span>Noida Sector 73, Uttar Pradesh, 201307</span></div>
+                    <div class="info-line"><i class="fas fa-phone-alt"></i> <span>+91 8051885344</span></div>
+                    <div class="info-line"><i class="fas fa-clock"></i> <span>Wed–Sat 5pm–11pm · Sun 10am–3pm</span></div>
+                </div>
+
+                <!-- reservation form with updated onsubmit -->
+                <div class="reservation-form">
+                    <h3 style="font-size: 2rem; font-family: 'Playfair Display'; margin-bottom: 1.5rem;">Reserve a table</h3>
+                    <form id="reservationForm" onsubmit="showThankYouPopup(event);">
+                        <div class="form-grid">
+                            <input type="text" placeholder="Name" required>
+                            <input type="email" placeholder="Email" required>
+                            <input type="date" required>
+                            <select>
+                                <option>2 guests</option>
+                                <option>3 guests</option>
+                                <option>4 guests</option>
+                                <option>5+ guests</option>
+                            </select>
+                            <textarea rows="2" placeholder="Special requests / allergies"></textarea>
+                            <button type="submit" class="btn-submit">Book now <i class="fas fa-check-circle"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== UPDATED LONG FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- column 1: about -->
+            <div class="footer-col">
+                <h4>Fireside Table</h4>
+                <p>Where the ember glows and the welcome never cools. Rustic comfort, modern soul – locally grown, always seasonal. Established 2012.</p>
+                <div class="social-links-footer">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <!-- column 2: hours -->
+            <div class="footer-col">  
+                <h4>Hours</h4>
+                <ul>
+                    <li><i class="fas fa-clock"></i> Wed–Thu: 5pm – 10pm</li>
+                    <li><i class="fas fa-clock"></i> Fri–Sat: 5pm – 11pm</li>
+                    <li><i class="fas fa-clock"></i> Sunday: 10am – 3pm (brunch)</li>
+                    <li><i class="fas fa-clock"></i> Mon–Tue: closed</li>
+                    <li><i class="fas fa-phone"></i> +91 8051885344</li>
+                </ul>
+            </div>
+            <!-- column 3: quick links -->
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <ul>
+                    <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#story"><i class="fas fa-chevron-right"></i> Our story</a></li>
+                    <li><a href="#menu"><i class="fas fa-chevron-right"></i> Menu</a></li>
+                    <li><a href="#chef"><i class="fas fa-chevron-right"></i> Chef Elena</a></li>
+                    <li><a href="#reservations"><i class="fas fa-chevron-right"></i> Reservations</a></li>
+                </ul>
+            </div>
+            <!-- column 4: newsletter -->
+            <div class="footer-col">
+                <h4>Join the hearth</h4>
+                <p>Subscribe for seasonal menus & events.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="your@email.com">
+                    <button><i class="fas fa-paper-plane"></i></button>
+                </div>
+                <p style="font-size: 0.9rem; opacity: 0.7;">We respect your privacy – no spam.</p>
+            </div>
+        </div>
+
+        <!-- footer bottom with extra links -->
+        <div class="footer-bottom">
+            <div>© 2026 Fireside Table. All rights reserved. A real local business concept.</div>
+            <div class="legal-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Accessibility</a>
+                <a href="#">Careers</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- THANK YOU POPUP MODAL (hidden by default) -->
+    <div id="thankyouPopup" class="thankyou-popup">
+        <div class="popup-card">
+            <i class="fas fa-heart"></i>
+            <h3>Thank you!</h3>
+            <p>Your booking request has been sent. We’ll confirm via email shortly — can’t wait to serve you.</p>
+            <button class="btn-popup" id="closePopupBtn">Return to homepage <i class="fas fa-home"></i></button>
+        </div>
+    </div>
+
+    <!-- JavaScript for popup + return to home -->
+    <script>
+        // function to show popup, prevent actual form submission, and then return to top
+        function showThankYouPopup(event) {
+            event.preventDefault();            // stop page reload
+            document.getElementById('thankyouPopup').style.display = 'flex';
+        }
+
+        // close popup and smoothly scroll to top (home)
+        document.getElementById('closePopupBtn').addEventListener('click', function() {
+            document.getElementById('thankyouPopup').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // optional: click outside popup to close & return home (UX)
+        window.addEventListener('click', function(e) {
+            const popup = document.getElementById('thankyouPopup');
+            if (e.target === popup) {
+                popup.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // smooth scroll for internal links (existing)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === "#" || href === "") return;
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
